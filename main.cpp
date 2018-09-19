@@ -537,6 +537,8 @@ int main(int argc, char *argv[])
 				//putText(full_image_roi, buff, Point2i(800, 20), FONT_HERSHEY_SIMPLEX, 0.7, Scalar(50, 10, 10), 3);
 				putText(full_image_roi, buff, Point2i(800, 20), FONT_HERSHEY_SIMPLEX, 0.7, Scalar(100, 50, 50), 2);
 				putText(full_image_roi, buff, Point2i(800, 20), FONT_HERSHEY_SIMPLEX, 0.7, Scalar(220, 120, 120), 1);
+                line(full_image_roi, Point((int)x_end, 0), Point((int)x_end, full_image_roi.rows), Scalar(100, 50, 50), 1);
+                line(full_image_roi, Point(0, (int)y_end - prev_img_rect.height), Point(full_image_roi.cols, (int)y_end - prev_img_rect.height), Scalar(100, 50, 50), 1);
 			}
 			else
 			{
