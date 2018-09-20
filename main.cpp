@@ -63,6 +63,7 @@ void callback_mouse_click(int event, int x, int y, int flags, void* user_data)
     }
     else if (event == cv::EVENT_LBUTTONDOWN)
     {
+        /*
         draw_select = true;
         selected = false;
         x_start = x;
@@ -72,9 +73,11 @@ void callback_mouse_click(int event, int x, int y, int flags, void* user_data)
         else if (next_img_rect.contains(Point2i(x, y))) add_id_img = 1;
         else add_id_img = 0;
         //std::cout << "cv::EVENT_LBUTTONDOWN \n";
+        */
     }
     else if (event == cv::EVENT_LBUTTONUP)
     {
+        /*
         x_size = abs(x - x_start);
         y_size = abs(y - y_start);
         x_end = max(x, 0);
@@ -82,6 +85,7 @@ void callback_mouse_click(int event, int x, int y, int flags, void* user_data)
         draw_select = false;
         selected = true;
         //std::cout << "cv::EVENT_LBUTTONUP \n";
+        */
     }
     else if (event == cv::EVENT_RBUTTONDOWN)
     {
@@ -639,7 +643,7 @@ int main(int argc, char *argv[])
 					"<- prev_img     -> next_img     space - next_img     c - clear_marks     n - one_object_per_img    0-9 - obj_id",
 					Point2i(0, 45), FONT_HERSHEY_SIMPLEX, 0.6, Scalar(50, 10, 10), 2);
 				putText(full_image_roi,
-					"ESC - exit   w - line width   k - hide obj_name   z - undo", //   h - disable help",
+					"ESC - exit   w - line width   k - hide obj_name   u - undo", //   h - disable help",
 					Point2i(0, 80), FONT_HERSHEY_SIMPLEX, 0.6, Scalar(50, 10, 10), 2);
 			}
 			else
@@ -691,8 +695,7 @@ int main(int argc, char *argv[])
 
 			switch (pressed_key)
 			{
-			case 'z':		// z
-			case 1048698:	// z
+			case 'u':		// z	// z
 			    undo = true;
 				break;
 
@@ -737,7 +740,27 @@ int main(int argc, char *argv[])
 			case 1048683:
 				show_mark_class = !show_mark_class;
 				break;
+            case 'z':
+            case 1048698:
+                if(draw_select) {
+                    x_size = abs(x_end - x_start);
+                    y_size = abs(y_end - y_start);
+                    draw_select = false;
+                    selected = true;
+                } else {
+                    draw_select = true;
+                    selected = false;
+                    x_start = (int)x_end;
+                    y_start = (int)y_end;
+                    if (prev_img_rect.contains(Point2i(x_end, y_end))) add_id_img = -1;
+                    else if (next_img_rect.contains(Point2i(x_end, y_end))) add_id_img = 1;
+                    else add_id_img = 0;
+                }
+                break;
+            case -1:
+                break;
 			default:
+                std::cout << "You press..." << pressed_key << std::endl;
 				;
 			}
 
